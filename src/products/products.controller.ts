@@ -25,14 +25,14 @@ export class ProductsController {
     @Get('/extended/:id')
     async getByIdExtended(@Param('id', new ParseUUIDPipe()) id: string): Promise<Product | null> {
         const product = await this.productsService.getByIdExtended(id);
-        if (!product) { throw new NotFoundException('Product not found'); }
+        if (!product) { throw new NotFoundException({message: 'Product not found'}); }
         return product;
     }
 
     @Get('/:id')
     async getById(@Param('id', new ParseUUIDPipe()) id: string): Promise<Product | null> {
         const product = await this.productsService.getById(id);
-        if (!product) { throw new NotFoundException('Product not found'); }
+        if (!product) { throw new NotFoundException({message: 'Product not found'}); }
         return product;
     }
 
