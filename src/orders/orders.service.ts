@@ -36,10 +36,35 @@ export class OrdersService {
     });
   }
 
+  /*
   public async create(
     orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<Order> {
     const { productId, clientId, ...otherData } = orderData;
+    try {
+      return await this.prismaService.order.create({
+        data: {
+          ...otherData,
+          product: {
+            connect: { id: productId },
+          },
+          client: {
+            connect: { id: clientId },
+          },          
+        },
+      });
+    } catch (error) {
+      if (error.code === 'P2025')
+        throw new BadRequestException("Product doesn't exist");
+      throw error;
+    }
+  }
+*/
+
+  public async create(
+    orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<Order> {
+    const { productId, clientId,...otherData } = orderData;
     try {
       return await this.prismaService.order.create({
         data: {

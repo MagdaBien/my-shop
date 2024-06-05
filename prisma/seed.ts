@@ -71,23 +71,23 @@ function getOrders() {
   return [
     {
       id: 'ba8e9671-bbb6-4363-9943-640c42f88640',
+      clientId: '76de6c0a-7550-43b1-a7e7-ab323bc36e04',      
       productId: '01c7599d-318b-4b9f-baf7-51f3a936a2d4',
-      clientId: '76de6c0a-7550-43b1-a7e7-ab323bc36e04',
-      amount: 3,
+      amount: 1,
       comment: 'takie tylko różowe'
     },
     {
       id: '9e54e25d-60db-4f6a-9421-fa48e1d7ccd2',
-      productId: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56',
       clientId: 'fe1156dd-db24-4e87-b312-554b2338f8c9',
-      amount: 3,
+      productId: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56',
+      amount: 1,
       comment: 'takie tylko zielone'
     },
     {
       id: '214022d1-8bf0-4f35-9ec2-243101867285',
-      productId: 'fd105551-0f0d-4a9f-bc41-c559c8a17256',
       clientId: '3dcc7fc1-6290-4e53-b206-46c6d46ee2e7',
-      amount: 3,
+      productId: 'fd105551-0f0d-4a9f-bc41-c559c8a17256',
+      amount: 1,
       comment: 'takie tylko czarne w kropki'
     },
 

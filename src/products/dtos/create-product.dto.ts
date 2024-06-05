@@ -25,6 +25,5 @@ export class CreateProductDTO {
   description: string;
 
   @IsString()
-  @IsNotEmpty()
   shortDescription: string;
 }

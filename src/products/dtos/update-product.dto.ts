@@ -19,6 +19,5 @@ export class UpdateProductDTO {
   description: string;
 
   @IsString()
-  @IsNotEmpty()
   shortDescription: string;
 }

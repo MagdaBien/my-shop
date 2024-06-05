@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDTO } from './dtos/create-order.dto';
-import { UpdateOrderDTO } from './dtos/update-order.dto';
+//import { UpdateOrderDTO } from './dtos/update-order.dto';
 import { ParseUUIDPipe } from '@nestjs/common';
 import { Order } from '@prisma/client';
 
@@ -52,10 +52,9 @@ export class OrdersController {
   @Put('/:id')
   async update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() orderData: UpdateOrderDTO,
+    @Body() orderData: Order,
   ): Promise<Order> {
     if (!(await this.ordersService.getById(id))) { throw new NotFoundException('Order not found'); }
-
     return await this.ordersService.updateById(id, orderData);
     //return { success: true };
   }
