@@ -10,7 +10,7 @@ const initialState = {
     error: false,
   },
   order: {
-    data: [],
+    data: JSON.parse(localStorage.getItem('basket')),
     isLoading: true,
     error: false,
   },

@@ -1,9 +1,13 @@
 import { useSelector } from 'react-redux';
 import styles from './BasketWidget.module.scss';
-import { howManyProducts } from '../../../redux/ordersRedux';
+import { getAllOrders } from '../../../redux/ordersRedux';
 
 const BasketWidget = () => {
-  const basketProductAmount = useSelector(howManyProducts);
+  const basketProducts = useSelector(getAllOrders);
+  let basketProductAmount = 0;
+  if (basketProducts) {
+    basketProductAmount = basketProducts.length;
+  }
 
   return (
     <div className={styles.light}>

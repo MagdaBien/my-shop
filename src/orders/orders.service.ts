@@ -39,7 +39,7 @@ export class OrdersService {
   public async create(
     orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<Order> {
-    const { productId, clientId,...otherData } = orderData;
+    const { productId, clientId, ...otherData } = orderData;
     try {
       return await this.prismaService.order.create({
         data: {

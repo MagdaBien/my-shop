@@ -16,10 +16,17 @@ export class ClientsController {
         return this.clientsService.getAll();
     } 
 
+    @Get('/email/:email')
+    async getByEmail(@Param('email') email: string): Promise<Client | null> {
+        const client = await this.clientsService.getByEmail(email);
+        if (!client) { throw new NotFoundException('Client not found');}
+        return client;
+    }  
+
     @Get('/:id')
     async getById(@Param('id', new ParseUUIDPipe()) id: string): Promise<Client | null> {
         const client = await this.clientsService.getById(id);
-        if (!client) { throw new NotFoundException('Product not found');}
+        if (!client) { throw new NotFoundException('Client not found');}
         return client;
     }  
 

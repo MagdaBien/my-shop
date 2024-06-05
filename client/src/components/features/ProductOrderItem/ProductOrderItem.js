@@ -8,7 +8,7 @@ const ProductOrdertItem = ({ product }) => {
   return (
     <Container fluid>
       <Row>
-        <Col> {product.productId}</Col>
+        <Col> {product.title}</Col>
         <Col>
           <div className={styles.picker}>{product.amount}</div>
         </Col>

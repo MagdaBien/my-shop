@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import styles from './NavBar.module.scss';
 import { NavLink } from 'react-router-dom';
 import BasketWidget from '../../features/BasketWidget/BasketWidget';
+import SearchForm from '../../common/SearchForm/SearchForm';
 
 const NavBar = () => {
   return (
@@ -14,14 +15,11 @@ const NavBar = () => {
       className={styles.bgprimary}
     >
       <Container>
-        <Navbar.Brand>Shop online</Navbar.Brand>
+        <Nav.Link as={NavLink} to="/">
+          <Navbar.Brand>Shop online</Navbar.Brand>{' '}
+        </Nav.Link>
+        <SearchForm />
         <Nav variant="underline">
-          <Nav.Link as={NavLink} to="/">
-            Home
-          </Nav.Link>
-          <Nav.Link as={NavLink} to="/summary">
-            OrderSummaryPage
-          </Nav.Link>
           <Nav.Link as={NavLink} to="/basket">
             <BasketWidget />
           </Nav.Link>

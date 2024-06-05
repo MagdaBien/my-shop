@@ -14,7 +14,6 @@ export const isDataReady = (state) => {
     return true;
   }
 };
-export const howManyProducts = (state) => state.order.data.length;
 
 // actions
 const createActionName = (actionName) => `app/orders/${actionName}`;
@@ -25,6 +24,7 @@ const END_REQUEST = createActionName('END_REQUEST');
 const UPDATE_ORDERS = createActionName('UPDATE_ORDER');
 const EDIT_ORDER = createActionName('EDIT_ORDER');
 const REMOVE_ORDER = createActionName('REMOVE_ORDER');
+const CLEAR_ORDER = createActionName('CLEAR_ORDER');
 
 // action creators
 export const startRequest = () => ({ type: START_REQUEST });
@@ -34,14 +34,64 @@ export const endRequest = () => ({ type: END_REQUEST });
 export const updateOrders = (payload) => ({ type: UPDATE_ORDERS, payload });
 export const editOrder = (payload) => ({ type: EDIT_ORDER, payload });
 export const removeOrder = (payload) => ({ type: REMOVE_ORDER, payload });
+export const clearOrder = (payload) => ({ type: CLEAR_ORDER, payload });
+
+// save basket (one item "basket") in localstorage and redux store
+export const updateLocalOrders = (basket) => {
+  return (dispatch) => {
+    localStorage.setItem('basket', JSON.stringify(basket));
+    dispatch(updateOrders(basket));
+  };
+};
+
+export const editLocalOrder = (basket) => {
+  return (dispatch) => {
+    const orders = JSON.parse(localStorage.getItem('basket'));
+    const newBasket = orders.map((order) =>
+      order.productId === basket.productId ? { ...order, ...basket } : order,
+    );
+    localStorage.setItem('basket', JSON.stringify(newBasket));
+    dispatch(updateOrders(newBasket));
+  };
+};
+
+export const removeLocalOrder = (id) => {
+  return (dispatch) => {
+    const orders = JSON.parse(localStorage.getItem('basket'));
+    const newBasket = orders.filter((order) => order.productId !== id);
+    localStorage.setItem('basket', JSON.stringify(newBasket));
+    dispatch(updateOrders(newBasket));
+  };
+};
+
+// saving to DB
+export const addOrderRecord = (order) => {
+  return (dispatch) => {
+    console.log('hello froma Redux  addOrderRecord ', order);
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(order),
+    };
+    fetch(API_URL + '/orders', options)
+      .then((res) => {
+        if (res.status !== 201) {
+          throw Error('Adding order failed ');
+        }
+      })
+      .catch((e) => {
+        dispatch(errorRequest({ error: e.message }));
+      });
+  };
+};
 
 // action creators
-const ordersReducer = (statePart = initialState.order, action) => {
+const ordersReducer = (statePart = initialState, action) => {
   switch (action.type) {
     case START_REQUEST:
       return {
         data: statePart.data,
-        isLoading: false,
+        isLoading: true,
         error: null,
       };
     case LOAD_DATA:
@@ -85,6 +135,12 @@ const ordersReducer = (statePart = initialState.order, action) => {
         data: statePart.data,
         isLoading: false,
         error: action.payload.error,
+      };
+    case CLEAR_ORDER:
+      return {
+        data: [],
+        isLoading: false,
+        error: null,
       };
     default:
       return {

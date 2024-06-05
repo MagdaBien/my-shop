@@ -9,9 +9,8 @@ import {
 
 export class CreateProductDTO {
   @IsNotEmpty()
-  @IsString()
   @Length(10, 20)
-  title: string;
+ title: string;
 
   @IsNotEmpty()
   @IsInt()
@@ -24,4 +23,8 @@ export class CreateProductDTO {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  shortDescription: string;
 }

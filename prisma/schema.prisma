@@ -11,10 +11,11 @@ datasource db {
 }
 
 model Product {
-  id          String @id @default(uuid())
-  title       String
-  price       Int
-  description String
+  id               String  @id @default(uuid())
+  title            String
+  price            Int
+  description      String
+  shortDescription String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -40,6 +41,8 @@ model Order {
   productId String?
   client    Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
   clientId  String?
+  comment   String?
+  amount    Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -49,7 +52,7 @@ model Photo {
   id        String   @id @default(uuid())
   product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   productId String?
-  image     String
+  prodImg   String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

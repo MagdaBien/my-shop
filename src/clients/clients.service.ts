@@ -18,6 +18,12 @@ export class ClientsService {
     });
   }
 
+  public getByEmail(email: Client['email']): Promise<Client | null> {
+    return this.prismaService.client.findFirst({
+      where: { email },
+    });
+  }  
+
   public deleteById(id: Client['id']): Promise<Client> {
     return this.prismaService.client.delete({
       where: { id },

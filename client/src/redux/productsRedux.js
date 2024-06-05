@@ -35,7 +35,7 @@ export const loadProductsRequest = () => {
       method: 'GET',
     };
 
-    fetch(API_URL + '/products', options)
+    fetch(API_URL + '/products/extended', options)
       .then((res) => {
         if (res.status !== 200) {
           throw Error('Loading products failed1 ' + res.error.message);
@@ -52,14 +52,38 @@ export const loadProductsRequest = () => {
   };
 };
 
-export const loadProductRequest = (id) => {
-  return async (dispatch) => {
+export const getAllFoundProducts = (searchPhrase) => {
+  return (dispatch) => {
     dispatch(startRequest());
     const options = {
       method: 'GET',
     };
 
-    fetch(API_URL + '/products/' + id, options)
+    fetch(API_URL + '/products/search/' + searchPhrase, options)
+      .then((res) => {
+        if (res.status !== 200) {
+          throw Error('Products not found ');
+        }
+        return res.json();
+      })
+      .then((dataRes) => {
+        dispatch(loadData([...dataRes]));
+        dispatch(endRequest());
+      })
+      .catch((e) => {
+        dispatch(errorRequest({ error: e.message }));
+      });
+  };
+};
+
+export const loadProductRequest = (id) => {
+  return (dispatch) => {
+    dispatch(startRequest());
+    const options = {
+      method: 'GET',
+    };
+
+    fetch(API_URL + '/products/extended/' + id, options)
       .then((res) => {
         if (res.status !== 200) {
           throw Error('Loading product failed');

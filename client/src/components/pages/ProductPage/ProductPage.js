@@ -15,7 +15,9 @@ import NumberPicker from 'react-widgets/NumberPicker';
 import 'react-widgets/styles.css';
 import styles from './ProductPage.module.scss';
 import { useState } from 'react';
-import { updateOrders, getAllOrders } from '../../../redux/ordersRedux';
+import { updateLocalOrders, getAllOrders } from '../../../redux/ordersRedux';
+import ImgGallery from '../../common/ImgGallery/ImgGallery';
+const doIterrable = require('../../../utils/doIterrable');
 
 const ProductPage = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const ProductPage = () => {
 
   const product = useSelector((state) => getProductById(state, id));
   const actualBasket = useSelector(getAllOrders);
-  //console.log('actualBasket: ', actualBasket);
+  console.log('actualBasket: ', actualBasket);
 
   // --- loading data
   const isLoading = useSelector(isLoadingData);
@@ -45,29 +47,59 @@ const ProductPage = () => {
   }
 
   function addToBasket() {
-    let basket = [...actualBasket];
-    const isExistingProduct = actualBasket.find(function (element) {
-      return element.productId === id;
-    });
-    if (isExistingProduct) {
-      basket = actualBasket.map((product) =>
-        product.productId === id
-          ? {
-              productId: id,
-              amount: product.amount + amount,
-              price: product.price,
-            }
-          : product,
-      );
+    let basket = [];
+    if (actualBasket) {
+      basket = [...actualBasket];
+      const isExistingProduct = actualBasket.find(function (element) {
+        return element.productId === id;
+      });
+      if (isExistingProduct) {
+        basket = actualBasket.map((product) =>
+          product.productId === id
+            ? {
+                title: product.title,
+                productId: id,
+                amount: product.amount + amount,
+                price: product.price,
+                comment: '',
+              }
+            : product,
+        );
+      } else {
+        basket.push({
+          title: product.title,
+          productId: id,
+          amount: amount,
+          price: product.price,
+          comment: '',
+        });
+      }
     } else {
-      basket.push({ productId: id, amount: amount, price: product.price });
+      basket.push({
+        title: product.title,
+        productId: id,
+        amount: amount,
+        price: product.price,
+        comment: '',
+      });
     }
+
+    dispatch(updateLocalOrders(basket));
     setClientInfo('Product added to your basket');
-    dispatch(updateOrders(basket));
+
     setTimeout(() => {
       setClientInfo('');
     }, 3000);
   }
+
+  let gallery = [...product.photos];
+  let galleryFiles = doIterrable(gallery, 'prodImg');
+  let isGallery = true;
+  if (gallery.length === 0) {
+    isGallery = false;
+  }
+
+  //console.log('gallery: ', gallery);
 
   return (
     <Container>
@@ -75,6 +107,7 @@ const ProductPage = () => {
       <h1>{product.title}</h1>
       <h2>{product.price} zł</h2>
       <p>{product.description}</p>
+      <p>{isGallery && <ImgGallery images={galleryFiles}></ImgGallery>}</p>
       <div className={styles.picker}>
         <NumberPicker
           defaultValue={amount}
@@ -87,7 +120,7 @@ const ProductPage = () => {
         <span className="fa fa-shopping-cart p-2" />
         ADD TO BASKET
       </Button>
-      <p>{clientInfo}</p>
+      <h3>{clientInfo}</h3>
     </Container>
   );
 };

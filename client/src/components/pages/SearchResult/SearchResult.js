@@ -1,25 +1,27 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import {
-  loadProductsRequest,
+  getAllFoundProducts,
   getAllProducts,
   isLoadingData,
   isErrorData,
   isDataReady,
 } from '../../../redux/productsRedux';
 import ProductItem from '../../views/ProductItem/ProductItem';
+import { useEffect } from 'react';
+import { useParams } from 'react-router';
 import LoadingDataInfo from '../../common/LoadingDataInfo/LoadingDataInfo';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-const ProductsList = () => {
+const SearchResult = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadProductsRequest());
-  }, [dispatch]);
+  const { searchPhrase } = useParams();
 
   const productsList = useSelector(getAllProducts);
+
+  useEffect(() => {
+    dispatch(getAllFoundProducts(searchPhrase));
+  }, [searchPhrase]);
 
   // --- loading data
   const isLoading = useSelector(isLoadingData);
@@ -38,7 +40,7 @@ const ProductsList = () => {
     <>
       <Row>
         <Col className="mt-3 mb-2">
-          <h1>Bestsellers products</h1>
+          <h1>All products by phrase: {searchPhrase}</h1>
         </Col>
       </Row>
       <div className="d-flex justify-content-around">
@@ -50,4 +52,4 @@ const ProductsList = () => {
   );
 };
 
-export default ProductsList;
+export default SearchResult;

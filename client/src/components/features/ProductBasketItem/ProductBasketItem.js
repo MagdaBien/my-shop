@@ -8,7 +8,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
-import { removeOrder, editOrder } from '../../../redux/ordersRedux';
+import { removeLocalOrder, editLocalOrder } from '../../../redux/ordersRedux';
 
 const ProductBasketItem = ({ product }) => {
   const dispatch = useDispatch();
@@ -26,17 +26,17 @@ const ProductBasketItem = ({ product }) => {
       amount,
       comment,
     };
-    dispatch(editOrder(updatedDataOrder));
+    dispatch(editLocalOrder(updatedDataOrder));
   }
 
   function removeFromBasket(id) {
-    dispatch(removeOrder(id));
+    dispatch(removeLocalOrder(id));
   }
 
   return (
     <Container fluid>
       <Row>
-        <Col> {product.productId}</Col>
+        <Col> {product.title}</Col>
         <Col>
           <div className={styles.picker}>
             <NumberPicker

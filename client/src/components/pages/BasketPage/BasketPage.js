@@ -18,10 +18,6 @@ const BasketPage = () => {
   const dispatch = useDispatch();
   const productsBasketList = useSelector(getAllOrders);
 
-  useEffect(() => {
-    //dispatch(loadOrdersRequest());
-  }, [dispatch]);
-
   // --- loading data
   const isLoading = useSelector(isLoadingData);
   const isError = useSelector(isErrorData);
@@ -35,6 +31,15 @@ const BasketPage = () => {
       ></LoadingDataInfo>
     );
   }
+
+  //console.log('productsBasketList: ', productsBasketList);
+  if (!productsBasketList)
+    return (
+      <>
+        <h1>No products in the basket.</h1>
+        <h3>Buy sth :)</h3>
+      </>
+    );
 
   return (
     <Container>
